@@ -69,7 +69,7 @@ export default {
     if (/^\/api\/(?:auth|webauthn)(?:\/|$)/.test(url.pathname) && !auth && !passkey) {
       return json({error:'Authentication route closed'},410);
     }
-    const api = auth || passkey || /^\/api\/(my-bots|plugins)(?:\/|$)/.test(url.pathname);
+    const api = auth || passkey || /^\/api\/(my-bots|plugins|capital)(?:\/|$)/.test(url.pathname);
     const asset = /^\/(js|css|fonts)\//.test(url.pathname) || ['/icon.png','/favicon.ico','/apple-touch-icon.png'].includes(url.pathname);
     if (localeRoot || page || api || asset) {
       if (!env.ITONAMI_APP_GATEWAY_KEY) return json({error:'App gateway unavailable'},503);
