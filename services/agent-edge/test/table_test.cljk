@@ -6,7 +6,7 @@
   path is. A 405 on a known path with the wrong method tells a scanner which
   paths exist behind this door, which is the one fact the door is for.
 
-  Run: npx nbb test/table_test.cljs   (from services/agent-edge)"
+  Run: kbb --backend sci test/table_test.cljk   (from services/agent-edge)"
   (:require ["../src/index.js" :as edge]
             [clojure.string :as str]))
 

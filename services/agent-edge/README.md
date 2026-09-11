@@ -109,7 +109,7 @@ gains a route the other does not.
 ## Test
 
 ```sh
-npm test        # or: npx nbb test/table_test.cljs
+npm test        # or: kbb --backend sci test/table_test.cljk
 ```
 
 15 checks, no network. The ones that matter are the refusals — including that
