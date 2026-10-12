@@ -64,7 +64,7 @@ export default {
     const oldApp = url.pathname.match(/^\/(?:(en|ja|zh|es|fr|hi|ar)\/)?bots\/app(?:\/|\/index.html)?$/);
     if (oldApp) return Response.redirect(url.origin + '/' + (oldApp[1] ? oldApp[1]+'/' : '') + url.search, 308);
     const page = /^\/(?:(en|ja|zh|es|fr|hi|ar)\/)?(?:signin|spam)\/?$/.test(url.pathname);
-    const auth = /^\/api\/auth\/(?:session|logout|web3\/(?:challenge|login))\/?$/.test(url.pathname);
+    const auth = /^\/api\/auth\/(?:session|logout|web3\/(?:challenge|login)|common\/(?:begin|finish|logout))\/?$/.test(url.pathname);
     const passkey = /^\/api\/webauthn\/(?:challenge|login)\/?$/.test(url.pathname);
     if (/^\/api\/(?:auth|webauthn)(?:\/|$)/.test(url.pathname) && !auth && !passkey) {
       return json({error:'Authentication route closed'},410);
