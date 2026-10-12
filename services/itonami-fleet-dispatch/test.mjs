@@ -35,3 +35,11 @@ test('app roots and auth reach Pages, while existing actors retain their mount',
   assert.equal(redirect.status,308); assert.equal(redirect.headers.get('location'),'https://app.itonami.cloud/ja/?plugins=open');
  }finally{globalThis.fetch=before;}
 });
+
+test('shared login preserves user proof and allows only the three explicit routes', async()=>{
+ const original=globalThis.fetch;const seen=[];globalThis.fetch=async req=>{seen.push(req);return new Response('ok');};
+ const env={ITONAMI_APP_GATEWAY_KEY:'fixture',FLEET:{get(){throw Error('must not dispatch');}}};
+ try {for(const name of ['begin','finish','logout']) {const body=JSON.stringify({nonce:'fixture'});const r=await router.fetch(new Request('https://app.itonami.cloud/api/auth/common/'+name,{method:'POST',headers:{origin:'https://app.itonami.cloud','content-type':'application/json','x-kotoba-root':'user-signed-root','x-kotoba-http-proof':'possession-proof'},body}),env);assert.equal(r.status,200);const req=seen.at(-1);assert.equal(req.url,'https://cloud-itonami.pages.dev/api/auth/common/'+name);assert.equal(req.headers.get('origin'),'https://app.itonami.cloud');assert.equal(req.headers.get('x-kotoba-root'),'user-signed-root');assert.equal(req.headers.get('x-kotoba-http-proof'),'possession-proof');assert.equal(await req.text(),body);}
+ const r=await router.fetch(new Request('https://app.itonami.cloud/api/auth/common/operator-approve',{method:'POST'}),env);assert.equal(r.status,410);assert.equal(seen.length,3);
+ }finally{globalThis.fetch=original;}
+});
